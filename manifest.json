@@ -2,7 +2,7 @@
   "Name": "Stardew HTTP Bridge",
   "Author": "likh_tar",
   "Version": "1.0.0",
-  "Description": "Локальний HTTP-сервер для виконання команд з Firebot",
+  "Description": "Локальний HTTP-bridge для спавну предметів та виклику фіч у Stardew Valley",
   "UniqueId": "likhtar.StardewHTTPBridge",
   "EntryDll": "Stardew_HTTP_Bridge.dll",
   "MinimumApiVersion": "4.0.0"
