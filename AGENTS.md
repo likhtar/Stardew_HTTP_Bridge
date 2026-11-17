@@ -8,6 +8,7 @@ Public notes for `Stardew_HTTP_Bridge`: a local HTTP bridge for Stardew Valley t
   `Action`, `Target`, `Id`, `Amount`, `Duration`, `X`, `Y`.
 - HTTP handler only enqueues into a `ConcurrentQueue`; actions run on the game thread in `OnUpdateTicked` (guards `Context.IsWorldReady`). Never run game code on the HTTP thread.
 - Supported actions (switch in `ExecuteCommand`): `heal`, `spawn_item`, `drink`/`eat`, `cash`, `crash`, `health`, `energy`, `noise`/`sound`, `bomb`, `warp`, `hat`, `shuffle`, `delete`, `speed`, `slug`, `freeze`, `reverse`, `npc`, `fish`, `monster`/`spawn_monster`.
+- Full ID reference (actions, buffs, items, bombs, monsters, sounds, warp locations) lives in `README.md` — keep it there when adding features.
 - HUD messages are in Ukrainian. Code style: `#nullable enable`, no code comments unless asked.
 
 ### Critical design decisions (learned the hard way)
