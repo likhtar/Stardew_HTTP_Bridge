@@ -139,7 +139,15 @@ namespace Stardew_HTTP_Bridge
             "BusStop", "CommunityCenter", "ElliottHouse", "Farm", "FishShop",
             "Forest", "HaleyHouse", "Hospital", "JojaMart", "LeahHouse",
             "ManorHouse", "Mountain", "Saloon", "SamHouse", "ScienceHouse",
-            "SeedShop", "Sunroom", "Tent", "Town", "Tunnel", "WizardHouse"
+            "SeedShop", "Sunroom", "Tent", "Town", "Tunnel", "WizardHouse",
+            "IslandSouth", "IslandNorth", "IslandFarmHouse"
+        };
+
+        private static readonly Dictionary<string, string> WarpUnlockQueries = new()
+        {
+            ["IslandSouth"] = "PLAYER_HAS_MAIL Any Visited_Island",
+            ["IslandNorth"] = "IS_ISLAND_NORTH_BRIDGE_FIXED",
+            ["IslandFarmHouse"] = "PLAYER_HAS_MAIL Any Island_UpgradeHouse"
         };
 
         public override void Entry(IModHelper helper)
@@ -563,14 +571,25 @@ namespace Stardew_HTTP_Bridge
             return data != null && data.DefaultArrivalTile != null;
         }
 
+        private bool IsWarpAllowed(string name)
+        {
+            if (WarpUnlockQueries.TryGetValue(name, out string? query)
+                && !string.IsNullOrEmpty(query)
+                && !GameStateQuery.CheckConditions(query))
+            {
+                return false;
+            }
+            return IsLocationUnlocked(Game1.getLocationFromName(name));
+        }
+
         private void TeleportPlayer(string targetLocation, int x, int y)
         {
             GameLocation locationToWarp;
             if (string.Equals(targetLocation, "random", StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(targetLocation))
             {
                 var candidates = SafeWarpLocations
+                    .Where(c => IsWarpAllowed(c))
                     .Select(Game1.getLocationFromName)
-                    .Where(IsLocationUnlocked)
                     .ToList();
                 if (candidates.Count == 0)
                 {

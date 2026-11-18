@@ -30,7 +30,7 @@ Send a POST request to `http://127.0.0.1:8080/stardew/` with a `CommandPayload` 
 | `energy` | Change stamina | `Amount` (default `15`) |
 | `noise`, `sound` | Play a sound cue | `Id` = cue name (default: random from the list below) |
 | `bomb` | Place bombs near the player | `Id` = `cherry`/`regular`/`mega` or `286`/`287`/`288` (also `random`); `Amount` (default `1`) |
-| `warp` | Teleport the player | `Target` = location name, `random`, or empty; `X`/`Y` optional (default: safe arrival tile) |
+| `warp` | Teleport the player | `Target` = location name, `random`, or empty; `X`/`Y` optional (default: safe arrival tile). IslandSouth/IslandWest need `Visited_Island` mail; IslandNorth needs `IS_ISLAND_NORTH_BRIDGE_FIXED`; IslandFarmHouse needs `Island_UpgradeHouse` mail. Random warp checks these conditions first. |
 | `hat` | Equip a hat | `Id` = hat index (default: random `0..89`) |
 | `shuffle` | Shuffle the inventory | — |
 | `delete` | Delete one random inventory item | — |
@@ -113,7 +113,12 @@ clack, purchase, sell, bubbles, furnace, woodWhack
 
 ## Warp locations for `warp`
 
-`AnimalShop`, `ArchaeologyHouse`, `Backwoods`, `Beach`, `Blacksmith`, `BusStop`, `CommunityCenter`, `ElliottHouse`, `Farm`, `FishShop`, `Forest`, `HaleyHouse`, `Hospital`, `JojaMart`, `LeahHouse`, `ManorHouse`, `Mountain`, `Saloon`, `SamHouse`, `ScienceHouse`, `SeedShop`, `Sunroom`, `Tent`, `Town`, `Tunnel`, `WizardHouse`. Random warp only uses locations that are unlocked.
+`AnimalShop`, `ArchaeologyHouse`, `Backwoods`, `Beach`, `Blacksmith`, `BusStop`, `CommunityCenter`, `ElliottHouse`, `Farm`, `FishShop`, `Forest`, `HaleyHouse`, `Hospital`, `JojaMart`, `LeahHouse`, `ManorHouse`, `Mountain`, `Saloon`, `SamHouse`, `ScienceHouse`, `SeedShop`, `Sunroom`, `Tent`, `Town`, `Tunnel`, `WizardHouse`, `IslandSouth`, `IslandNorth`, `IslandFarmHouse`.
+
+Unlock conditions for islands (checked by `GameStateQuery.CheckConditions` for random warp; explicit warp with a `Target` name bypasses them):
+- `IslandSouth` → `PLAYER_HAS_MAIL Any Visited_Island`
+- `IslandNorth` → `IS_ISLAND_NORTH_BRIDGE_FIXED`
+- `IslandFarmHouse` → `PLAYER_HAS_MAIL Any Island_UpgradeHouse`
 
 ## Build
 
