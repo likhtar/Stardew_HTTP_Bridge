@@ -34,6 +34,7 @@ namespace Stardew_HTTP_Bridge
     public class ModEntry : Mod
     {
         private HttpListener? _listener;
+        private ModConfig _config = null!;
         private readonly ConcurrentQueue<CommandPayload> _commandQueue = new();
         private readonly Random _random = new();
         private int _reverseTicks = 0;
@@ -152,6 +153,7 @@ namespace Stardew_HTTP_Bridge
 
         public override void Entry(IModHelper helper)
         {
+            _config = Helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -165,15 +167,15 @@ namespace Stardew_HTTP_Bridge
             try
             {
                 _listener = new HttpListener();
-                _listener.Prefixes.Add("http://127.0.0.1:8080/stardew/");
-                _listener.Prefixes.Add("http://localhost:8080/stardew/");
+                _listener.Prefixes.Add($"http://127.0.0.1:{_config.Port}/stardew/");
+                _listener.Prefixes.Add($"http://localhost:{_config.Port}/stardew/");
                 _listener.Start();
-                Monitor.Log("HTTP Server started on 127.0.0.1:8080 and localhost:8080", LogLevel.Info);
+                Monitor.Log($"HTTP Server started on 127.0.0.1:{_config.Port} and localhost:{_config.Port}", LogLevel.Info);
                 _listener.BeginGetContext(OnHttpRequest, null);
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed to start HTTP Server: {ex.Message}", LogLevel.Error);
+                Monitor.Log($"Failed to start HTTP Server on port {_config.Port}: {ex.Message}", LogLevel.Error);
             }
         }
 

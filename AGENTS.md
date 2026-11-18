@@ -4,7 +4,7 @@ Public notes for `Stardew_HTTP_Bridge`: a local HTTP bridge for Stardew Valley t
 
 ## Architecture
 
-- `HttpListener` on `http://127.0.0.1:8080/stardew/` (+ `localhost:8080`). POST body = `CommandPayload` JSON (case-insensitive):
+- `HttpListener` on `http://127.0.0.1:<Port>/stardew/` (+ `localhost:<Port>`), default `8080`, configurable via `config.json` (`ModConfig.Port`). POST body = `CommandPayload` JSON (case-insensitive):
   `Action`, `Target`, `Id`, `Amount`, `Duration`, `X`, `Y`.
 - HTTP handler only enqueues into a `ConcurrentQueue`; actions run on the game thread in `OnUpdateTicked` (guards `Context.IsWorldReady`). Never run game code on the HTTP thread.
 - Supported actions (switch in `ExecuteCommand`): `heal`, `spawn_item`, `drink`/`eat`, `cash`, `crash`, `health`, `energy`, `noise`/`sound`, `bomb`, `warp`, `hat`, `shuffle`, `delete`, `speed`, `slug`, `freeze`, `reverse`, `npc`, `fish`, `monster`/`spawn_monster`.

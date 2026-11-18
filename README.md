@@ -2,7 +2,19 @@
 
 SMAPI mod for Stardew Valley: a local HTTP bridge for spawning items and invoking in-game features.
 
-Send a POST request to `http://127.0.0.1:8080/stardew/` with a `CommandPayload` JSON body. The HTTP handler only queues requests; actions execute on the game thread.
+Send a POST request to `http://127.0.0.1:8080/stardew/` (or your configured port) with a `CommandPayload` JSON body. The HTTP handler only queues requests; actions execute on the game thread.
+
+## Configuration
+
+The port is set in `config.json` in the mod folder (`Mods/Stardew_HTTP_Bridge/config.json`):
+
+```json
+{
+  "Port": 8087
+}
+```
+
+Default is `8080` if the file is missing. Restart the game after changing the port.
 
 | Field | Meaning |
 |---|---|
